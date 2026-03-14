@@ -4,190 +4,1627 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Jaydeep Sathvara | Substation Design Engineer, MV-HV-UHV, AIS/GIS, XLPE cable engineering" />
-  <meta name="keywords" content="Electrical Engineer, Substation Design, AIS, GIS, XLPE cable, MV HV UHV" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Jaydeep Sathvara | Electrical Engineering Portfolio</title>
+  <title>Jaydeep Sathvara — Electrical Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    /* ── RESET & TOKENS ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVJkEZSMUkrQ6usKu8zTlHdSWRX3a6db4bfQXFHkSJj4AgNamrHKo+JXtqstN7jLwLqcpf8O/wg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="icon" type="image/svg+xml" href="/image/bolt-solid.svg" />
-  <link rel="stylesheet" href="/style.css" />
+    :root {
+      --bg:        #06070a;
+      --surface:   #0d0f14;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.14);
+      --text:      #e8eaf0;
+      --muted:     #6b7280;
+      --amber:     #f59e0b;
+      --amber-dim: rgba(245,158,11,0.12);
+      --amber-glow:rgba(245,158,11,0.25);
+      --teal:      #2dd4bf;
+      --radius:    4px;
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Mono', monospace;
+      --font-serif:'Instrument Serif', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ──────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── GRID BACKGROUND ────────────────────────────────────── */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,158,11,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,158,11,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── CURSOR GLOW ────────────────────────────────────────── */
+    #cursor-glow {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────────────── */
+    .wrap { position: relative; z-index: 2; }
+    .container { width: min(1100px, 92%); margin: 0 auto; }
+
+    /* ── SCROLLBAR ──────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 2px; }
+
+    /* ── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      padding: 0 5%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(6,7,10,0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--amber); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+
+    .nav-cta {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      border: 1px solid var(--amber);
+      padding: 0.45rem 1.1rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-cta:hover { background: var(--amber); color: var(--bg); }
+
+    /* hamburger */
+    .ham { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .ham span { display: block; width: 22px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px; }
+    .ham.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .ham.open span:nth-child(2) { opacity: 0; }
+    .ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(6,7,10,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 5%;
+      z-index: 899;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--text); text-decoration: none; font-size: 1.2rem; font-family: var(--font-head); font-weight: 700; }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      padding: 6rem 0;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      border: 1px solid var(--amber-glow);
+      background: var(--amber-dim);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero-name {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .hero-name em {
+      font-style: normal;
+      font-family: var(--font-serif);
+      font-size: 0.85em;
+      color: var(--amber);
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--amber);
+      border: 1px solid var(--amber);
+      padding: 0.75rem 1.8rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+    .btn-ghost {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      padding: 0.75rem 1.8rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--amber); color: var(--amber); transform: translateY(-2px); }
+
+    /* hero right: circuit visual */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circuit-svg {
+      width: 100%;
+      max-width: 460px;
+      opacity: 0.85;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .stat-chips {
+      position: absolute;
+      bottom: -20px; left: -30px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .stat-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: slide-in 0.6s ease both;
+      backdrop-filter: blur(8px);
+    }
+    .stat-chip:nth-child(2) { animation-delay: 0.15s; }
+    .stat-chip:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .stat-chip-num {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--amber);
+    }
+    .stat-chip-label {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    /* ── SECTION COMMON ─────────────────────────────────────── */
+    section { position: relative; }
+    .section-inner { padding: 7rem 0; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      display: block;
+      width: 40px; height: 1px;
+      background: var(--amber);
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.8;
+    }
+
+    /* divider */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-hi), transparent);
+    }
+
+    /* ── ABOUT ──────────────────────────────────────────────── */
+    #about { background: var(--surface); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1rem;
+    }
+
+    .about-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .about-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: default;
+    }
+    .about-card:hover {
+      border-color: var(--amber);
+      transform: translateY(-4px);
+    }
+    .about-card-icon {
+      font-size: 1.2rem;
+      color: var(--amber);
+      margin-bottom: 0.6rem;
+    }
+    .about-card h4 {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .about-card p {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── SKILLS ─────────────────────────────────────────────── */
+    #skills { }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .skill-categories { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .skill-cat-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .skill-cat-btn i { color: var(--amber); width: 14px; }
+    .skill-cat-btn.active, .skill-cat-btn:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: var(--amber-dim);
+    }
+
+    .skills-panel { display: none; }
+    .skills-panel.active { display: block; }
+
+    .skill-bars { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .skill-bar-item {}
+    .skill-bar-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+    .skill-bar-name {
+      font-size: 12px;
+      color: var(--text);
+    }
+    .skill-bar-pct {
+      font-size: 11px;
+      color: var(--amber);
+    }
+    .skill-bar-track {
+      height: 3px;
+      background: var(--border-hi);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--amber), var(--teal));
+      border-radius: 2px;
+      width: 0;
+      transition: width 1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── EXPERIENCE ─────────────────────────────────────────── */
+    #experience { background: var(--surface); }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 140px;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--amber) 0%, var(--border) 100%);
+    }
+
+    .tl-item {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0 2.5rem;
+      padding: 0 0 3rem;
+      position: relative;
+      animation: fade-up 0.5s ease both;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tl-date {
+      text-align: right;
+      padding-top: 0.1rem;
+    }
+    .tl-date-range {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+      line-height: 1.4;
+    }
+    .tl-date-co {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: 134px;
+      top: 6px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--amber);
+    }
+    .tl-dot.active-dot {
+      background: var(--amber);
+      box-shadow: 0 0 0 4px var(--amber-dim);
+    }
+
+    .tl-content {
+      padding-left: 0;
+    }
+    .tl-role {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .tl-company {
+      font-size: 11px;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    .tl-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .tl-list li {
+      font-size: 12px;
+      color: var(--muted);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.6;
+    }
+    .tl-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--amber);
+      font-size: 10px;
+    }
+
+    /* ── PROJECTS ───────────────────────────────────────────── */
+    #projects { }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      group: true;
+    }
+    .proj-card:hover {
+      border-color: var(--amber);
+      transform: translateY(-6px);
+    }
+
+    .proj-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(20%) brightness(0.8);
+      transition: filter 0.4s;
+    }
+    .proj-card:hover .proj-img { filter: grayscale(0%) brightness(0.9); }
+
+    .proj-body { padding: 1.25rem; }
+    .proj-tag {
+      display: inline-block;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-glow);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+    .proj-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .proj-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    .proj-link {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+    .proj-link:hover { gap: 0.7rem; }
+
+    /* ── EDUCATION ──────────────────────────────────────────── */
+    #education { background: var(--surface); }
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .edu-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .edu-card:hover {
+      border-color: var(--amber);
+      transform: translateY(-4px);
+    }
+    .edu-deg {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.5rem;
+    }
+    .edu-school {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .edu-program { font-size: 12px; color: var(--muted); margin-bottom: 0.4rem; }
+    .edu-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+    .edu-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .edu-meta i { color: var(--amber); font-size: 9px; }
+
+    /* ── PUBLICATIONS ───────────────────────────────────────── */
+    #publications { }
+    .pub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem 2.5rem;
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: center;
+      transition: border-color 0.3s;
+    }
+    .pub-card:hover { border-color: var(--amber); }
+    .pub-icon {
+      width: 52px; height: 52px;
+      border-radius: 10px;
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--amber);
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .pub-journal {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.4rem;
+    }
+    .pub-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .pub-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+    .pub-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-decoration: none;
+      margin-top: 0.75rem;
+      transition: gap 0.2s;
+    }
+    .pub-link:hover { gap: 0.7rem; }
+
+    /* ── CONTACT ────────────────────────────────────────────── */
+    #contact { background: var(--surface); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--amber); }
+    .contact-link i {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-field input,
+    .form-field textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 12px;
+      padding: 0.8rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus { border-color: var(--amber); }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder { color: var(--muted); }
+    .form-field textarea { min-height: 120px; }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      padding: 2.5rem 5%;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-links a {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--amber); }
+
+    /* ── SCROLL-TO-TOP ──────────────────────────────────────── */
+    #scroll-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--amber);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      z-index: 800;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 0.3s;
+      pointer-events: none;
+    }
+    #scroll-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    #scroll-top:hover { background: #e07d00; }
+
+    /* ── APPEAR ANIMATION ───────────────────────────────────── */
+    .appear {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .appear.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .appear-delay-1 { transition-delay: 0.1s; }
+    .appear-delay-2 { transition-delay: 0.2s; }
+    .appear-delay-3 { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .ham { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { order: -1; }
+      .stat-chips { position: static; flex-direction: row; flex-wrap: wrap; margin-top: 1.5rem; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .skills-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .timeline::before { left: 0; }
+      .tl-item { grid-template-columns: 1fr; padding-left: 1.5rem; }
+      .tl-date { text-align: left; }
+      .tl-dot { left: -6px; }
+      .form-row { grid-template-columns: 1fr; }
+      .pub-card { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 500px) {
+      .hero-name { font-size: 2.4rem; }
+      .section-title { font-size: 1.8rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .about-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ── TYPED CURSOR ───────────────────────────────────────── */
+    .typed-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--amber);
+      margin-left: 3px;
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-  <header class="header" id="top">
-    <nav class="nav container">
-      <a href="#top" class="logo">Jaydeep <span>Electrical</span></a>
-      <ul class="nav-menu">
-        <li class="nav-item"><a href="#about">About</a></li>
-        <li class="nav-item"><a href="#skills">Skills</a></li>
-        <li class="nav-item"><a href="#experience">Experience</a></li>
-        <li class="nav-item"><a href="#projects">Projects</a></li>
-        <li class="nav-item"><a href="#contact">Contact</a></li>
-      </ul>
-      <a class="btn" href="https://www.linkedin.com/in/jaydeep-sathvara" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-    </nav>
+  <div class="grid-bg"></div>
+  <div id="cursor-glow"></div>
 
-    <section class="hero container">
-      <div class="hero-content">
-        <h1>Substation Design Engineer <span>&</span> MEng</h1>
-        <p>Driving MV to UHV substation engineering excellence with experience in AIS/GIS, XLPE cable routing, and point-cloud precision workflows.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#projects">Explore Projects</a>
-          <a class="btn btn-secondary" href="#contact">Connect on LinkedIn</a>
-        </div>
-      </div>
-      <div class="hero-decor">
-        <img src="/image/bolt-solid.svg" alt="Electric bolt icon" />
-      </div>
-    </section>
-  </header>
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">JS<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://www.linkedin.com/in/jaydeep-sathvara" target="_blank" class="nav-cta" rel="noopener">LinkedIn ↗</a>
+    <button class="ham" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-  <main>
-    <section id="about" class="section container">
-      <h2>About Me</h2>
-      <p>Substation Design Engineer at RCM Technologies with a Master of Engineering from University of Windsor and extensive experience in MV, HV, EHV, UHV, AIS/GIS systems, and XLPE cable engineering. I build practical, code-compliant designs that connect stakeholder objectives to on-site constructability and long-term reliability.</p>
-      <p>Previously I developed MV power assemblies at Rockwell Automation and led distribution & grounding studies for a 455MW solar policy project at UGVCL, while aligning technologies with operational and safety standards.</p>
-      <div class="profile-grid">
-        <div class="profile-card">
-          <h3>Power System Tools</h3>
-          <p>MATLAB, ETAP, PSS/E, CDEGS, AutoCAD</p>
-        </div>
-        <div class="profile-card">
-          <h3>Substation Expertise</h3>
-          <p>MV/HV/EHV/UHV, AIS/GIS, XLPE cables, earthing, protection coordination</p>
-        </div>
-        <div class="profile-card">
-          <h3>Domain Skills</h3>
-          <p>Load flow, short-circuit, transient stability, relay settings, design validation</p>
-        </div>
-      </div>
-    </section>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="closeMobile()">About</a>
+    <a href="#skills" onclick="closeMobile()">Skills</a>
+    <a href="#experience" onclick="closeMobile()">Experience</a>
+    <a href="#projects" onclick="closeMobile()">Projects</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+    <a href="https://www.linkedin.com/in/jaydeep-sathvara" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </div>
 
-    <section id="skills" class="section container gray">
-      <h2>Core Skills</h2>
-      <div class="skills-grid">
-        <article class="skill-card"><i class="fas fa-bolt"></i><strong>Power Systems Engineering</strong><p>Load flow, protection coordination, short-circuit, transient stability</p></article>
-        <article class="skill-card"><i class="fas fa-cube"></i><strong>Substation Design</strong><p>AIS/GIS, MV/HV/EHV/UHV, XLPE cable routing, grounding, spec development</p></article>
-        <article class="skill-card"><i class="fas fa-ruler-combined"></i><strong>Analysis & Validation</strong><p>ETAP/ MATLAB simulations, point-cloud precision, compliance with standards</p></article>
-      </div>
-    </section>
+  <div class="wrap">
 
-    <section id="experience" class="section container">
-      <h2>Experience</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <h3>Technical Specialist | Substation Design Engineer</h3>
-          <span>Apr 2024 - Present</span>
-          <ul>
-            <li>Lead detailed MV/HV/EHV/UHV substation design in AIS/GIS environments at RCM Technologies.</li>
-            <li>Developed technical specifications for primary equipment and performed load + transient process calculations.</li>
-            <li>Integrated site surveys with point-cloud workflows to improve precision in layout design and coordination with stakeholders.</li>
-          </ul>
-        </div>
-        <div class="timeline-item">
-          <h3>Electrical Technician</h3>
-          <span>Sep 2023 - Apr 2024</span>
-          <ul>
-            <li>Executed MV assembly and testing for VFD, starter, and Allen-Bradley control systems at Rockwell Automation.</li>
-            <li>Interpreted schematics and ensured quality compliance through production and pre-production testing.</li>
-            <li>Collaborated with design and test teams to optimize build reliability and documentation flow.</li>
-          </ul>
-        </div>
-        <div class="timeline-item">
-          <h3>Junior Engineer</h3>
-          <span>Mar 2021 - Dec 2021</span>
-          <ul>
-            <li>Designed and analyzed solar plant electrical systems for UGVCL SKY Scheme project (455MW), including grounding and sag/tension calculations.</li>
-            <li>Used AutoCAD + CDEGS for detailed cable design and took corrective action on short-circuit faults from SEDM portal reviews.</li>
-            <li>Delivered daily technical reporting to Gujarat government stakeholders with accuracy and compliance.</li>
-          </ul>
-        </div>
-        <div class="timeline-item">
-          <h3>Engineer Intern</h3>
-          <span>May 2019 - Sep 2019</span>
-          <ul>
-            <li>Supported power circuit breaker and control panel design at Larsen & Toubro, including EPDS system and smart manufacturing practices.</li>
-            <li>Performed root-cause analysis on breaker failures and supported control panel test cycles for protection and thermal compliance.</li>
-            <li>Collaborated on VE concept improvements and produced clear technical test documentation.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+    <!-- HERO -->
+    <section id="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-left">
+            <div class="hero-tag">Available for New Projects</div>
+            <h1 class="hero-name">Jaydeep<br><em>Sathvara</em></h1>
+            <p class="hero-title" id="typed-title">Substation Design Engineer &amp; MEng</p>
+            <p class="hero-desc">
+              Driving MV to UHV substation engineering excellence with expertise in AIS/GIS systems, XLPE cable routing, and point-cloud precision workflows. Based in Canada.
+            </p>
+            <div class="hero-actions">
+              <a href="#projects" class="btn-primary">View Projects</a>
+              <a href="#contact" class="btn-ghost">Get In Touch</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <!-- SVG Circuit Illustration -->
+            <svg class="circuit-svg" viewBox="0 0 460 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Main substation box -->
+              <rect x="130" y="80" width="200" height="240" rx="8" fill="#0d0f14" stroke="#f59e0b" stroke-width="1.5"/>
+              <!-- Inner panel -->
+              <rect x="150" y="100" width="160" height="60" rx="4" fill="#06070a" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+              <!-- Voltmeter gauge -->
+              <circle cx="230" cy="130" r="22" fill="none" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+              <path d="M210 138 A22 22 0 0 1 250 138" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+              <line x1="230" y1="130" x2="245" y2="118" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+              <text x="230" y="148" font-size="7" fill="#f59e0b" text-anchor="middle" font-family="monospace">kV</text>
+              <!-- Bus bars -->
+              <line x1="150" y1="175" x2="310" y2="175" stroke="#f59e0b" stroke-width="2"/>
+              <line x1="150" y1="185" x2="310" y2="185" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+              <!-- Circuit breakers on bus -->
+              <rect x="168" y="165" width="12" height="30" rx="2" fill="#0d0f14" stroke="#f59e0b" stroke-width="1"/>
+              <rect x="220" y="165" width="12" height="30" rx="2" fill="#0d0f14" stroke="#f59e0b" stroke-width="1"/>
+              <rect x="272" y="165" width="12" height="30" rx="2" fill="#0d0f14" stroke="#f59e0b" stroke-width="1"/>
+              <!-- Down feeds -->
+              <line x1="174" y1="195" x2="174" y2="260" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+              <line x1="226" y1="195" x2="226" y2="260" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+              <line x1="278" y1="195" x2="278" y2="260" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+              <!-- Transformers -->
+              <ellipse cx="174" cy="270" rx="16" ry="10" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+              <ellipse cx="174" cy="282" rx="16" ry="10" fill="none" stroke="rgba(245,158,11,0.5)" stroke-width="1"/>
+              <ellipse cx="226" cy="270" rx="16" ry="10" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+              <ellipse cx="226" cy="282" rx="16" ry="10" fill="none" stroke="rgba(245,158,11,0.5)" stroke-width="1"/>
+              <ellipse cx="278" cy="270" rx="16" ry="10" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+              <ellipse cx="278" cy="282" rx="16" ry="10" fill="none" stroke="rgba(245,158,11,0.5)" stroke-width="1"/>
+              <!-- Ground lines -->
+              <line x1="174" y1="292" x2="174" y2="305" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="162" y1="305" x2="186" y2="305" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="165" y1="309" x2="183" y2="309" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+              <line x1="168" y1="313" x2="180" y2="313" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
+              <line x1="226" y1="292" x2="226" y2="305" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="214" y1="305" x2="238" y2="305" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="217" y1="309" x2="235" y2="309" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+              <line x1="220" y1="313" x2="232" y2="313" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
+              <line x1="278" y1="292" x2="278" y2="305" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="266" y1="305" x2="290" y2="305" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="269" y1="309" x2="287" y2="309" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+              <line x1="272" y1="313" x2="284" y2="313" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
+              <!-- Incoming feed from top -->
+              <line x1="230" y1="80" x2="230" y2="30" stroke="#f59e0b" stroke-width="2"/>
+              <polyline points="220,40 230,20 240,40" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+              <!-- HV tower lines left/right -->
+              <line x1="130" y1="175" x2="60" y2="140" stroke="rgba(245,158,11,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+              <line x1="310" y1="175" x2="400" y2="140" stroke="rgba(245,158,11,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+              <!-- Left tower -->
+              <line x1="48" y1="100" x2="48" y2="160" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="36" y1="115" x2="60" y2="115" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <circle cx="36" cy="115" r="3" fill="#f59e0b"/>
+              <circle cx="60" cy="115" r="3" fill="#f59e0b"/>
+              <!-- Right tower -->
+              <line x1="412" y1="100" x2="412" y2="160" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <line x1="400" y1="115" x2="424" y2="115" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+              <circle cx="400" cy="115" r="3" fill="#f59e0b"/>
+              <circle cx="424" cy="115" r="3" fill="#f59e0b"/>
+              <!-- Labels -->
+              <text x="230" y="18" font-size="7" fill="rgba(245,158,11,0.7)" text-anchor="middle" font-family="monospace">HV FEED</text>
+              <text x="230" y="360" font-size="7" fill="rgba(245,158,11,0.5)" text-anchor="middle" font-family="monospace">DISTRIBUTION BUS</text>
+              <!-- Glow dots animated -->
+              <circle cx="174" cy="175" r="3" fill="#f59e0b">
+                <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="226" cy="175" r="3" fill="#f59e0b">
+                <animate attributeName="opacity" values="1;0.3;1" dur="2s" begin="0.7s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="278" cy="175" r="3" fill="#f59e0b">
+                <animate attributeName="opacity" values="1;0.3;1" dur="2s" begin="1.4s" repeatCount="indefinite"/>
+              </circle>
+              <!-- Current flow animation on bus -->
+              <line x1="150" y1="180" x2="310" y2="180" stroke="rgba(245,158,11,0.15)" stroke-width="4"/>
+              <rect x="148" y="177" width="20" height="6" fill="rgba(245,158,11,0.5)" rx="2">
+                <animateTransform attributeName="transform" type="translate" from="0 0" to="162 0" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
+              </rect>
+            </svg>
 
-    <section id="education" class="section container">
-      <h2>Education</h2>
-      <div class="profile-grid">
-        <div class="profile-card">
-          <h3>University of Windsor</h3>
-          <p>Master of Engineering (MEng) — Electrical and Computer Engineering | GPA 3.7/4.0</p>
-          <p>2022 - 2023</p>
-        </div>
-        <div class="profile-card">
-          <h3>G H Patel College of Engineering &amp; Technology</h3>
-          <p>Bachelor of Engineering — Electrical Engineering | 8.03/10</p>
-          <p>2016 - 2020</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="section container gray">
-      <h2>Selected Projects</h2>
-      <div class="projects-grid">
-        <article class="project-card">
-          <img src="https://images.unsplash.com/photo-1601456904316-54f7de1f89db?auto=format&fit=crop&w=1400&q=80" alt="STATCOM research" />
-          <h4>Reactive Power Compensation with STATCOM</h4>
-          <p>Implemented and validated STATCOM-based shunt compensation for improved stability and load balance in transmission systems.</p>
-          <a href="https://ijireeice.com/papers/reactive-power-compensation-of-transmission-network-using-facts-devices/" class="project-link" target="_blank" rel="noopener noreferrer">Read Publication</a>
-        </article>
-        <article class="project-card">
-          <img src="https://images.unsplash.com/photo-1645128055965-81f7c02d42a7?auto=format&fit=crop&w=1400&q=80" alt="XLPE cable project" />
-          <h4>XLPE Cable MV/HV Integration</h4>
-          <p>Detailed MV to HV XLPE cable installation and AIS/GIS substation integration for reliable energy delivery.</p>
-          <a href="#" class="project-link">More details</a>
-        </article>
-        <article class="project-card">
-          <img src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1400&q=80" alt="Li-ion modeling" />
-          <h4>Li-ion Battery OCV-SOC Modeling</h4>
-          <p>Developed precise open-circuit voltage modeling for battery storage optimization and performance forecasting.</p>
-          <a href="#" class="project-link">More details</a>
-        </article>
-      </div>
-    </section>
-
-    <section id="publications" class="section container">
-      <h2>Publication</h2>
-      <div class="profile-grid">
-        <div class="profile-card">
-          <h3><a href="https://ijireeice.com/papers/reactive-power-compensation-of-transmission-network-using-facts-devices/" target="_blank" rel="noopener noreferrer">Reactive Power Compensation of Transmission Network using FACTS Devices</a></h3>
-          <p>International Journal of Innovative Research in Electrical, Electronics, Instrumentation and Control Engineering (IJIREEICE).</p>
-          <p>Focus: STATCOM shunt compensation, reactive power management, improved reliability, and power quality for transmission links.</p>
+            <div class="stat-chips">
+              <div class="stat-chip">
+                <div class="stat-chip-num">5+</div>
+                <div class="stat-chip-label">Years<br>Experience</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip-num">UHV</div>
+                <div class="stat-chip-label">MV/HV/EHV/<br>UHV Expert</div>
+              </div>
+              <div class="stat-chip">
+                <div class="stat-chip-num">455MW</div>
+                <div class="stat-chip-label">Solar Project<br>Delivered</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="section container">
-      <h2>Contact</h2>
-      <p>Let's work together to deliver best-in-class electrical infrastructure and substation solutions.</p>
-      <form name="contact" method="POST" data-netlify="true" class="contact-form" onsubmit="return handleSubmit(event)">
-        <input type="hidden" name="form-name" value="contact" />
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="email" placeholder="Your Email" required />
-        <input type="text" name="subject" placeholder="Subject" required />
-        <textarea name="message" placeholder="Message" rows="5" required></textarea>
-        <button type="submit" class="btn btn-primary">Send Message</button>
-      </form>
-    </section>
-  </main>
+    <div class="divider"></div>
 
-  <footer class="footer">
-    <p>© 2026 Jaydeep Sathvara — Electrical Engineering & Full-Stack Development</p>
-    <div class="footer-actions">
-      <a href="/thankyou.html" class="btn btn-secondary">Thank You</a>
-      <a href="https://www.linkedin.com/in/jaydeep-sathvara" target="_blank" rel="noopener noreferrer" class="btn">LinkedIn</a>
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-inner">
+          <div class="about-grid">
+            <div class="about-text appear">
+              <div class="section-label">About</div>
+              <h2 class="section-title">Building the infrastructure<br><em style="font-family:var(--font-serif);font-style:italic;color:var(--amber)">that powers the world</em></h2>
+              <p>Substation Design Engineer at RCM Technologies with a Master of Engineering from University of Windsor and deep expertise in MV, HV, EHV, and UHV systems, AIS/GIS substations, and XLPE cable engineering.</p>
+              <p>I build practical, code-compliant designs that connect stakeholder objectives to on-site constructability and long-term reliability. Previously engineered MV power assemblies at Rockwell Automation and led distribution & grounding studies for a 455MW solar project at UGVCL.</p>
+            </div>
+            <div class="about-cards appear appear-delay-1">
+              <div class="about-card">
+                <div class="about-card-icon"><i class="fas fa-microchip"></i></div>
+                <h4>Power System Tools</h4>
+                <p>MATLAB, ETAP, PSS/E, CDEGS, AutoCAD</p>
+              </div>
+              <div class="about-card">
+                <div class="about-card-icon"><i class="fas fa-bolt"></i></div>
+                <h4>Substation Expertise</h4>
+                <p>MV/HV/EHV/UHV, AIS/GIS, XLPE cables, earthing, protection</p>
+              </div>
+              <div class="about-card">
+                <div class="about-card-icon"><i class="fas fa-chart-line"></i></div>
+                <h4>Domain Skills</h4>
+                <p>Load flow, short-circuit, transient stability, relay settings</p>
+              </div>
+              <div class="about-card">
+                <div class="about-card-icon"><i class="fas fa-layer-group"></i></div>
+                <h4>Point-Cloud Workflows</h4>
+                <p>Site survey integration, precision layout design & coordination</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-inner">
+          <div class="section-label appear">Skills</div>
+          <h2 class="section-title appear">Technical<br>Proficiencies</h2>
+
+          <div class="skills-layout" style="margin-top:3rem;">
+            <div class="skill-categories appear">
+              <button class="skill-cat-btn active" onclick="switchCat('power', this)">
+                <i class="fas fa-bolt"></i> Power Systems
+              </button>
+              <button class="skill-cat-btn" onclick="switchCat('software', this)">
+                <i class="fas fa-laptop-code"></i> Software & Tools
+              </button>
+              <button class="skill-cat-btn" onclick="switchCat('substation', this)">
+                <i class="fas fa-industry"></i> Substation Design
+              </button>
+              <button class="skill-cat-btn" onclick="switchCat('standards', this)">
+                <i class="fas fa-file-contract"></i> Standards & Codes
+              </button>
+            </div>
+
+            <div class="appear appear-delay-1">
+              <div class="skills-panel active" id="cat-power">
+                <div class="skill-bars">
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Load Flow & Short-Circuit Analysis</span><span class="skill-bar-pct">95%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="95"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Protection Coordination</span><span class="skill-bar-pct">90%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Transient Stability Analysis</span><span class="skill-bar-pct">88%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Reactive Power Compensation</span><span class="skill-bar-pct">85%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Grounding & Earthing Design</span><span class="skill-bar-pct">92%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="skills-panel" id="cat-software">
+                <div class="skill-bars">
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">ETAP</span><span class="skill-bar-pct">93%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="93"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">MATLAB / Simulink</span><span class="skill-bar-pct">88%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">AutoCAD</span><span class="skill-bar-pct">90%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">CDEGS</span><span class="skill-bar-pct">82%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">PSS/E</span><span class="skill-bar-pct">80%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="skills-panel" id="cat-substation">
+                <div class="skill-bars">
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">MV/HV/EHV/UHV Substation Design</span><span class="skill-bar-pct">95%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="95"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">AIS / GIS Systems</span><span class="skill-bar-pct">92%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">XLPE Cable Routing</span><span class="skill-bar-pct">90%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Point-Cloud Integration</span><span class="skill-bar-pct">85%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Primary Equipment Specification</span><span class="skill-bar-pct">88%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="skills-panel" id="cat-standards">
+                <div class="skill-bars">
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">IEEE Standards</span><span class="skill-bar-pct">90%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">IEC Standards</span><span class="skill-bar-pct">88%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">NERC / NEC Compliance</span><span class="skill-bar-pct">82%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">CSA Standards (Canada)</span><span class="skill-bar-pct">80%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="container">
+        <div class="section-inner">
+          <div class="section-label appear">Experience</div>
+          <h2 class="section-title appear">Career<br>Timeline</h2>
+
+          <div class="timeline">
+            <div class="tl-item appear">
+              <div class="tl-date">
+                <div class="tl-date-range">Apr 2024<br>Present</div>
+                <div class="tl-date-co">RCM Technologies</div>
+              </div>
+              <div class="tl-dot active-dot"></div>
+              <div class="tl-content">
+                <div class="tl-role">Technical Specialist — Substation Design Engineer</div>
+                <div class="tl-company">RCM Technologies · Full-time</div>
+                <ul class="tl-list">
+                  <li>Lead detailed MV/HV/EHV/UHV substation design in AIS/GIS environments, delivering complex projects from concept to construction.</li>
+                  <li>Develop technical specifications for primary equipment and perform load & transient process calculations to ensure compliance.</li>
+                  <li>Integrate site surveys with point-cloud workflows to improve precision in layout design and stakeholder coordination.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="tl-item appear appear-delay-1">
+              <div class="tl-date">
+                <div class="tl-date-range">Sep 2023<br>Apr 2024</div>
+                <div class="tl-date-co">Rockwell Automation</div>
+              </div>
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-role">Electrical Technician</div>
+                <div class="tl-company">Rockwell Automation · Contract</div>
+                <ul class="tl-list">
+                  <li>Executed MV assembly and testing for VFD, starter, and Allen-Bradley control systems.</li>
+                  <li>Interpreted schematics and ensured quality compliance through production and pre-production testing cycles.</li>
+                  <li>Collaborated with design and test teams to optimize build reliability and documentation flow.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="tl-item appear appear-delay-2">
+              <div class="tl-date">
+                <div class="tl-date-range">Mar 2021<br>Dec 2021</div>
+                <div class="tl-date-co">UGVCL</div>
+              </div>
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-role">Junior Engineer</div>
+                <div class="tl-company">UGVCL (Gujarat Government) · Full-time</div>
+                <ul class="tl-list">
+                  <li>Designed and analyzed solar plant electrical systems for SKY Scheme (455MW), including grounding and sag/tension calculations.</li>
+                  <li>Used AutoCAD + CDEGS for cable design; resolved short-circuit faults via SEDM portal reviews.</li>
+                  <li>Delivered daily technical reporting to Gujarat government stakeholders with accuracy and compliance.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="tl-item appear appear-delay-3">
+              <div class="tl-date">
+                <div class="tl-date-range">May 2019<br>Sep 2019</div>
+                <div class="tl-date-co">Larsen & Toubro</div>
+              </div>
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <div class="tl-role">Engineer Intern</div>
+                <div class="tl-company">Larsen & Toubro · Internship</div>
+                <ul class="tl-list">
+                  <li>Supported power circuit breaker and control panel design including EPDS system and smart manufacturing practices.</li>
+                  <li>Performed root-cause analysis on breaker failures and supported control panel test cycles for protection and thermal compliance.</li>
+                  <li>Contributed VE concept improvements and produced clear technical test documentation.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-inner">
+          <div class="projects-header">
+            <div>
+              <div class="section-label appear">Projects</div>
+              <h2 class="section-title appear">Selected Work</h2>
+            </div>
+          </div>
+          <div class="projects-grid">
+            <article class="proj-card appear">
+              <img class="proj-img" src="https://images.unsplash.com/photo-1601456904316-54f7de1f89db?auto=format&fit=crop&w=900&q=80" alt="STATCOM" loading="lazy"/>
+              <div class="proj-body">
+                <span class="proj-tag">Publication · FACTS</span>
+                <h3 class="proj-title">Reactive Power Compensation with STATCOM</h3>
+                <p class="proj-desc">Implemented and validated STATCOM-based shunt compensation for improved voltage stability and load balance in HV transmission systems.</p>
+                <a href="https://ijireeice.com/papers/reactive-power-compensation-of-transmission-network-using-facts-devices/" target="_blank" rel="noopener" class="proj-link">Read Publication <i class="fas fa-arrow-right"></i></a>
+              </div>
+            </article>
+            <article class="proj-card appear appear-delay-1">
+              <img class="proj-img" src="https://images.unsplash.com/photo-1645128055965-81f7c02d42a7?auto=format&fit=crop&w=900&q=80" alt="XLPE cable" loading="lazy"/>
+              <div class="proj-body">
+                <span class="proj-tag">Engineering · HV Cables</span>
+                <h3 class="proj-title">XLPE Cable MV/HV Integration</h3>
+                <p class="proj-desc">Detailed MV to HV XLPE cable installation and AIS/GIS substation integration for reliable energy delivery across industrial infrastructure.</p>
+                <a href="#contact" class="proj-link">Request Details <i class="fas fa-arrow-right"></i></a>
+              </div>
+            </article>
+            <article class="proj-card appear appear-delay-2">
+              <img class="proj-img" src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=900&q=80" alt="Battery modeling" loading="lazy"/>
+              <div class="proj-body">
+                <span class="proj-tag">Research · Energy Storage</span>
+                <h3 class="proj-title">Li-ion Battery OCV-SOC Modeling</h3>
+                <p class="proj-desc">Developed precise open-circuit voltage modeling for battery storage optimization and performance forecasting in renewable energy systems.</p>
+                <a href="#contact" class="proj-link">Request Details <i class="fas fa-arrow-right"></i></a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="container">
+        <div class="section-inner">
+          <div class="section-label appear">Education</div>
+          <h2 class="section-title appear">Academic<br>Background</h2>
+          <div class="edu-grid">
+            <div class="edu-card appear">
+              <div class="edu-deg">Master of Engineering</div>
+              <div class="edu-school">University of Windsor</div>
+              <div class="edu-program">Electrical and Computer Engineering</div>
+              <div class="edu-meta">
+                <span><i class="fas fa-star"></i> GPA 3.7 / 4.0</span>
+                <span><i class="fas fa-calendar"></i> 2022 – 2023</span>
+              </div>
+            </div>
+            <div class="edu-card appear appear-delay-1">
+              <div class="edu-deg">Bachelor of Engineering</div>
+              <div class="edu-school">GH Patel College of Engineering</div>
+              <div class="edu-program">Electrical Engineering</div>
+              <div class="edu-meta">
+                <span><i class="fas fa-star"></i> 8.03 / 10.0</span>
+                <span><i class="fas fa-calendar"></i> 2016 – 2020</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PUBLICATIONS -->
+    <section id="publications">
+      <div class="container">
+        <div class="section-inner">
+          <div class="section-label appear">Publications</div>
+          <h2 class="section-title appear">Research Work</h2>
+          <div class="pub-card appear">
+            <div class="pub-icon"><i class="fas fa-book-open"></i></div>
+            <div>
+              <div class="pub-journal">IJIREEICE — International Journal</div>
+              <div class="pub-title">Reactive Power Compensation of Transmission Network using FACTS Devices</div>
+              <div class="pub-desc">Focus: STATCOM shunt compensation, reactive power management, improved reliability, and power quality for transmission links. Demonstrates implementation and validation of FACTS-based compensation methods for modern HV transmission systems.</div>
+              <a href="https://ijireeice.com/papers/reactive-power-compensation-of-transmission-network-using-facts-devices/" target="_blank" rel="noopener" class="pub-link">Read Full Paper <i class="fas fa-external-link-alt" style="font-size:9px;"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-inner">
+          <div class="contact-grid">
+            <div>
+              <div class="section-label appear">Contact</div>
+              <h2 class="section-title appear">Let's Build<br><em style="font-family:var(--font-serif);font-style:italic;color:var(--amber)">Something.</em></h2>
+              <p class="section-desc appear">Open to consulting engagements, full-time roles, and collaborative technical projects in power systems and substation design.</p>
+              <div class="contact-info">
+                <a href="https://www.linkedin.com/in/jaydeep-sathvara" target="_blank" rel="noopener" class="contact-link appear">
+                  <i class="fab fa-linkedin-in"></i>
+                  linkedin.com/in/jaydeep-sathvara
+                </a>
+                <a href="mailto:jaydeep.sathvara@email.com" class="contact-link appear appear-delay-1">
+                  <i class="fas fa-envelope"></i>
+                  jaydeep.sathvara@email.com
+                </a>
+                <a href="#" class="contact-link appear appear-delay-2">
+                  <i class="fas fa-map-marker-alt"></i>
+                  Windsor, Ontario, Canada
+                </a>
+              </div>
+            </div>
+            <div>
+              <form class="contact-form appear" onsubmit="handleSubmit(event)">
+                <div class="form-row">
+                  <div class="form-field"><input type="text" placeholder="Your Name" required /></div>
+                  <div class="form-field"><input type="email" placeholder="Email Address" required /></div>
+                </div>
+                <div class="form-field"><input type="text" placeholder="Subject" required /></div>
+                <div class="form-field"><textarea placeholder="Tell me about your project..." required></textarea></div>
+                <button type="submit" class="btn-primary" style="width:fit-content;">Send Message →</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- .wrap -->
+
+  <footer>
+    <div class="footer-copy">© 2026 Jaydeep Sathvara — Electrical Engineering</div>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="https://www.linkedin.com/in/jaydeep-sathvara" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>
 
-  <a id="scrollToTop" class="btn-scroll-top" href="#top" aria-label="Back to top" title="Back to top" style="display:none;"><i class="fas fa-arrow-up"></i></a>
+  <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
 
-  <script src="/main.js"></script>
+  <script>
+    // Cursor glow
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top  = e.clientY + 'px';
+    });
+
+    // Hamburger
+    const ham = document.getElementById('ham');
+    const mob = document.getElementById('mobileMenu');
+    ham.addEventListener('click', () => {
+      ham.classList.toggle('open');
+      mob.classList.toggle('open');
+    });
+    function closeMobile() {
+      ham.classList.remove('open');
+      mob.classList.remove('open');
+    }
+
+    // Scroll-to-top
+    const scrollBtn = document.getElementById('scroll-top');
+    window.addEventListener('scroll', () => {
+      scrollBtn.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    // Appear on scroll
+    const appears = document.querySelectorAll('.appear');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    appears.forEach(el => io.observe(el));
+
+    // Skill bars
+    function animateBars(panel) {
+      panel.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 80);
+      });
+    }
+
+    function switchCat(cat, btn) {
+      document.querySelectorAll('.skill-cat-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.skills-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById('cat-' + cat);
+      panel.classList.add('active');
+      animateBars(panel);
+    }
+
+    // Animate initial bars
+    setTimeout(() => animateBars(document.getElementById('cat-power')), 400);
+
+    // Animate bars when skills section scrolls into view
+    const skillsSection = document.getElementById('skills');
+    const skillsIO = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        const activePanel = document.querySelector('.skills-panel.active');
+        if (activePanel) animateBars(activePanel);
+        skillsIO.disconnect();
+      }
+    }, { threshold: 0.3 });
+    skillsIO.observe(skillsSection);
+
+    // Contact form
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = 'Sent ✓';
+      btn.style.background = '#2dd4bf';
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = '';
+        e.target.reset();
+      }, 3000);
+    }
+
+    // Typed effect for hero title
+    const titles = [
+      'Substation Design Engineer & MEng',
+      'MV / HV / EHV / UHV Specialist',
+      'AIS / GIS Systems Expert',
+      'XLPE Cable Design Engineer'
+    ];
+    let ti = 0, ci = 0, deleting = false;
+    const titleEl = document.getElementById('typed-title');
+    const cursor = document.createElement('span');
+    cursor.className = 'typed-cursor';
+    titleEl.textContent = '';
+    titleEl.appendChild(cursor);
+
+    function type() {
+      const current = titles[ti];
+      if (!deleting) {
+        titleEl.textContent = current.slice(0, ci + 1);
+        titleEl.appendChild(cursor);
+        ci++;
+        if (ci === current.length) { deleting = true; setTimeout(type, 2200); return; }
+        setTimeout(type, 55);
+      } else {
+        titleEl.textContent = current.slice(0, ci - 1);
+        titleEl.appendChild(cursor);
+        ci--;
+        if (ci === 0) {
+          deleting = false;
+          ti = (ti + 1) % titles.length;
+          setTimeout(type, 400);
+          return;
+        }
+        setTimeout(type, 28);
+      }
+    }
+    setTimeout(type, 1000);
+  </script>
 </body>
 </html>
