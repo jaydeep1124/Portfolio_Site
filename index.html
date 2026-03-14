@@ -617,37 +617,45 @@
       gap: 1rem;
     }
 
+    /* ── PROJECT CARDS (no images) ─────────────────────────── */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
     }
-
     .proj-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
       transition: border-color 0.3s, transform 0.3s;
-      position: relative;
-      group: true;
+      display: flex;
+      flex-direction: column;
     }
     .proj-card:hover {
       border-color: var(--amber);
       transform: translateY(-6px);
     }
-
-    .proj-img {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      display: block;
-      filter: grayscale(20%) brightness(0.8);
-      transition: filter 0.4s;
+    .proj-card.proj-featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
     }
-    .proj-card:hover .proj-img { filter: grayscale(0%) brightness(0.9); }
-
-    .proj-body { padding: 1.25rem; }
+    .proj-visual {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      border-right: 1px solid var(--border);
+      min-height: 200px;
+    }
+    .proj-card:not(.proj-featured) .proj-visual {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      min-height: 160px;
+    }
+    .proj-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
     .proj-tag {
       display: inline-block;
       font-size: 9px;
@@ -663,7 +671,7 @@
     .proj-title {
       font-family: var(--font-head);
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--text);
       margin-bottom: 0.5rem;
       line-height: 1.3;
@@ -671,8 +679,32 @@
     .proj-desc {
       font-size: 11px;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
       margin-bottom: 1rem;
+      flex: 1;
+    }
+    .proj-metrics {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .proj-metric {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .proj-metric-val {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--amber);
+    }
+    .proj-metric-label {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
     .proj-link {
       font-size: 10px;
@@ -686,8 +718,13 @@
       transition: gap 0.2s;
     }
     .proj-link:hover { gap: 0.7rem; }
-
-    /* ── EDUCATION ──────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .proj-card.proj-featured { grid-column: 1; grid-template-columns: 1fr; }
+      .proj-card.proj-featured .proj-visual { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+    @media (max-width: 600px) {
+      .projects-grid { grid-template-columns: 1fr; }
+    }
     #education { background: var(--surface); }
     .edu-grid {
       display: grid;
@@ -947,6 +984,25 @@
       .about-cards { grid-template-columns: 1fr; }
     }
 
+    /* ── TOOL BADGES ────────────────────────────────────────── */
+    .tool-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem;
+      border-radius: 100px;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .tool-badge i { color: var(--amber); font-size: 9px; }
+    .tool-badge:hover { color: var(--text); border-color: var(--amber); }
+
     /* ── TYPED CURSOR ───────────────────────────────────────── */
     .typed-cursor {
       display: inline-block;
@@ -1119,8 +1175,8 @@
             <div class="about-text appear">
               <div class="section-label">About</div>
               <h2 class="section-title">Building the infrastructure<br><em style="font-family:var(--font-serif);font-style:italic;color:var(--amber)">that powers the world</em></h2>
-              <p>Substation Design Engineer at RCM Technologies with a Master of Engineering from University of Windsor and deep expertise in MV, HV, EHV, and UHV systems, AIS/GIS substations, and XLPE cable engineering.</p>
-              <p>I build practical, code-compliant designs that connect stakeholder objectives to on-site constructability and long-term reliability. Previously engineered MV power assemblies at Rockwell Automation and led distribution & grounding studies for a 455MW solar project at UGVCL.</p>
+              <p>Substation Design Engineer at RCM Technologies with a Master of Engineering from University of Windsor. My core work is <strong style="color:var(--text)">physical substation design</strong> — AIS/GIS yard layouts, equipment arrangement, XLPE cable routing and duct bank design, grounding grid systems, and site-survey-to-drawing workflows using point-cloud data.</p>
+              <p>I build practical, code-compliant designs that translate stakeholder requirements into constructable, on-site deliverables across MV, HV, EHV, and UHV voltage levels. Previously engineered MV power assemblies at Rockwell Automation and led distribution & grounding design for a 455MW solar project at UGVCL.</p>
             </div>
             <div class="about-cards appear appear-delay-1">
               <div class="about-card">
@@ -1129,21 +1185,44 @@
                 <p>MATLAB, ETAP, PSS/E, CDEGS, AutoCAD</p>
               </div>
               <div class="about-card">
-                <div class="about-card-icon"><i class="fas fa-bolt"></i></div>
-                <h4>Substation Expertise</h4>
-                <p>MV/HV/EHV/UHV, AIS/GIS, XLPE cables, earthing, protection</p>
+                <div class="about-card-icon"><i class="fas fa-drafting-compass"></i></div>
+                <h4>Physical Layout Design</h4>
+                <p>AIS/GIS yard layout, equipment arrangement, clearance checks, civil coordination</p>
               </div>
               <div class="about-card">
-                <div class="about-card-icon"><i class="fas fa-chart-line"></i></div>
-                <h4>Domain Skills</h4>
-                <p>Load flow, short-circuit, transient stability, relay settings</p>
+                <div class="about-card-icon"><i class="fas fa-network-wired"></i></div>
+                <h4>Cable & Raceway Design</h4>
+                <p>XLPE MV/HV routing, cable schedules, tray layout, duct bank design</p>
               </div>
               <div class="about-card">
                 <div class="about-card-icon"><i class="fas fa-layer-group"></i></div>
-                <h4>Point-Cloud Workflows</h4>
-                <p>Site survey integration, precision layout design & coordination</p>
+                <h4>Point-Cloud & Survey</h4>
+                <p>3D point-cloud integration, as-built verification, precision site coordination</p>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- TOOLS STRIP -->
+    <section id="tools-strip" style="background:var(--surface);">
+      <div class="container">
+        <div style="padding:2.5rem 0; display:flex; flex-wrap:wrap; align-items:center; gap:1rem;">
+          <span style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-right:0.5rem;white-space:nowrap;">Tools & Platforms</span>
+          <div style="display:flex;flex-wrap:wrap;gap:0.65rem;">
+            <span class="tool-badge"><i class="fas fa-drafting-compass"></i> AutoCAD</span>
+            <span class="tool-badge"><i class="fas fa-cube"></i> CDEGS</span>
+            <span class="tool-badge"><i class="fas fa-bolt"></i> ETAP</span>
+            <span class="tool-badge"><i class="fas fa-wave-square"></i> MATLAB</span>
+            <span class="tool-badge"><i class="fas fa-project-diagram"></i> PSS/E</span>
+            <span class="tool-badge"><i class="fas fa-map"></i> Point-Cloud</span>
+            <span class="tool-badge"><i class="fas fa-file-contract"></i> IEEE / IEC</span>
+            <span class="tool-badge"><i class="fas fa-file-contract"></i> CSA Standards</span>
+            <span class="tool-badge"><i class="fas fa-industry"></i> AIS / GIS</span>
+            <span class="tool-badge"><i class="fas fa-network-wired"></i> XLPE Cable</span>
           </div>
         </div>
       </div>
@@ -1160,42 +1239,71 @@
 
           <div class="skills-layout" style="margin-top:3rem;">
             <div class="skill-categories appear">
-              <button class="skill-cat-btn active" onclick="switchCat('power', this)">
-                <i class="fas fa-bolt"></i> Power Systems
+              <button class="skill-cat-btn active" onclick="switchCat('physical', this)">
+                <i class="fas fa-drafting-compass"></i> Physical Design
+              </button>
+              <button class="skill-cat-btn" onclick="switchCat('civil', this)">
+                <i class="fas fa-hard-hat"></i> Civil & Structural
               </button>
               <button class="skill-cat-btn" onclick="switchCat('software', this)">
                 <i class="fas fa-laptop-code"></i> Software & Tools
               </button>
-              <button class="skill-cat-btn" onclick="switchCat('substation', this)">
-                <i class="fas fa-industry"></i> Substation Design
-              </button>
-              <button class="skill-cat-btn" onclick="switchCat('standards', this)">
-                <i class="fas fa-file-contract"></i> Standards & Codes
+              <button class="skill-cat-btn" onclick="switchCat('analysis', this)">
+                <i class="fas fa-calculator"></i> Engineering Analysis
               </button>
             </div>
 
             <div class="appear appear-delay-1">
-              <div class="skills-panel active" id="cat-power">
+              <div class="skills-panel active" id="cat-physical">
                 <div class="skill-bars">
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">Load Flow & Short-Circuit Analysis</span><span class="skill-bar-pct">95%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">AIS / GIS Yard Layout & Equipment Arrangement</span><span class="skill-bar-pct">97%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="97"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">XLPE Cable Routing & Duct Bank Design</span><span class="skill-bar-pct">95%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="95"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">Protection Coordination</span><span class="skill-bar-pct">90%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">Electrical Clearance & Phase Spacing</span><span class="skill-bar-pct">93%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="93"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Grounding Grid & Earthing System Design</span><span class="skill-bar-pct">92%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Primary Equipment Specification (Tx, CB, DS)</span><span class="skill-bar-pct">90%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">Transient Stability Analysis</span><span class="skill-bar-pct">88%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">Point-Cloud Integration & As-Built Verification</span><span class="skill-bar-pct">88%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
                   </div>
+                </div>
+              </div>
+
+              <div class="skills-panel" id="cat-civil">
+                <div class="skill-bars">
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">Reactive Power Compensation</span><span class="skill-bar-pct">85%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">Substation Site Grading & Drainage</span><span class="skill-bar-pct">85%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">Grounding & Earthing Design</span><span class="skill-bar-pct">92%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">Equipment Foundation Coordination</span><span class="skill-bar-pct">83%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="83"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Cable Tray & Raceway Layout</span><span class="skill-bar-pct">92%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Constructability Review & Stakeholder Coordination</span><span class="skill-bar-pct">90%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">Bill of Materials & Procurement Support</span><span class="skill-bar-pct">87%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="87"></div></div>
                   </div>
                 </div>
               </div>
@@ -1203,70 +1311,45 @@
               <div class="skills-panel" id="cat-software">
                 <div class="skill-bars">
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">ETAP</span><span class="skill-bar-pct">93%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="93"></div></div>
-                  </div>
-                  <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">MATLAB / Simulink</span><span class="skill-bar-pct">88%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
-                  </div>
-                  <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">AutoCAD</span><span class="skill-bar-pct">90%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
-                  </div>
-                  <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">CDEGS</span><span class="skill-bar-pct">82%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
-                  </div>
-                  <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">PSS/E</span><span class="skill-bar-pct">80%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="skills-panel" id="cat-substation">
-                <div class="skill-bars">
-                  <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">MV/HV/EHV/UHV Substation Design</span><span class="skill-bar-pct">95%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">AutoCAD (2D Layout & Drawings)</span><span class="skill-bar-pct">95%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="95"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">AIS / GIS Systems</span><span class="skill-bar-pct">92%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">CDEGS (Grounding Analysis)</span><span class="skill-bar-pct">88%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">XLPE Cable Routing</span><span class="skill-bar-pct">90%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
-                  </div>
-                  <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">Point-Cloud Integration</span><span class="skill-bar-pct">85%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">ETAP (Load Flow & Short Circuit)</span><span class="skill-bar-pct">85%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">Primary Equipment Specification</span><span class="skill-bar-pct">88%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">MATLAB / Simulink</span><span class="skill-bar-pct">82%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">PSS/E</span><span class="skill-bar-pct">78%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="78"></div></div>
                   </div>
                 </div>
               </div>
 
-              <div class="skills-panel" id="cat-standards">
+              <div class="skills-panel" id="cat-analysis">
                 <div class="skill-bars">
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">IEEE Standards</span><span class="skill-bar-pct">90%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
-                  </div>
-                  <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">IEC Standards</span><span class="skill-bar-pct">88%</span></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">Load Flow & Short-Circuit Calculations</span><span class="skill-bar-pct">88%</span></div>
                     <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">NERC / NEC Compliance</span><span class="skill-bar-pct">82%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">Sag & Tension Calculations</span><span class="skill-bar-pct">85%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
                   </div>
                   <div class="skill-bar-item">
-                    <div class="skill-bar-header"><span class="skill-bar-name">CSA Standards (Canada)</span><span class="skill-bar-pct">80%</span></div>
-                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div>
+                    <div class="skill-bar-header"><span class="skill-bar-name">Insulation Coordination</span><span class="skill-bar-pct">83%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="83"></div></div>
+                  </div>
+                  <div class="skill-bar-item">
+                    <div class="skill-bar-header"><span class="skill-bar-name">IEEE / IEC / CSA Standards Compliance</span><span class="skill-bar-pct">90%</span></div>
+                    <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
                   </div>
                 </div>
               </div>
@@ -1368,33 +1451,132 @@
             </div>
           </div>
           <div class="projects-grid">
-            <article class="proj-card appear">
-              <img class="proj-img" src="https://images.unsplash.com/photo-1601456904316-54f7de1f89db?auto=format&fit=crop&w=900&q=80" alt="STATCOM" loading="lazy"/>
+
+            <!-- FEATURED: STATCOM Publication -->
+            <article class="proj-card proj-featured appear">
+              <div class="proj-visual">
+                <svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:220px;">
+                  <!-- Transmission line towers -->
+                  <line x1="30" y1="30" x2="30" y2="130" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+                  <line x1="14" y1="55" x2="46" y2="55" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+                  <line x1="14" y1="70" x2="46" y2="70" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+                  <circle cx="14" cy="55" r="3" fill="#f59e0b"/>
+                  <circle cx="46" cy="55" r="3" fill="#f59e0b"/>
+                  <line x1="190" y1="30" x2="190" y2="130" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+                  <line x1="174" y1="55" x2="206" y2="55" stroke="rgba(245,158,11,0.5)" stroke-width="1.5"/>
+                  <line x1="174" y1="70" x2="206" y2="70" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+                  <circle cx="174" cy="55" r="3" fill="#f59e0b"/>
+                  <circle cx="206" cy="55" r="3" fill="#f59e0b"/>
+                  <!-- Lines between towers -->
+                  <path d="M14 55 Q110 80 174 55" stroke="rgba(245,158,11,0.35)" stroke-width="1" fill="none"/>
+                  <path d="M46 55 Q110 72 174 55" stroke="rgba(245,158,11,0.25)" stroke-width="1" fill="none"/>
+                  <!-- STATCOM box -->
+                  <rect x="88" y="90" width="44" height="30" rx="4" fill="#0d0f14" stroke="#f59e0b" stroke-width="1.5"/>
+                  <text x="110" y="109" font-size="8" fill="#f59e0b" text-anchor="middle" font-family="monospace">STATCOM</text>
+                  <line x1="110" y1="80" x2="110" y2="90" stroke="#f59e0b" stroke-width="1.5"/>
+                  <!-- Bus connection -->
+                  <rect x="60" y="77" width="100" height="5" rx="2" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <!-- Q arrows -->
+                  <path d="M130 105 L145 95 L140 100 M145 95 L140 105" stroke="#2dd4bf" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                  <text x="150" y="102" font-size="7" fill="#2dd4bf" font-family="monospace">Q</text>
+                  <!-- Reactive power wave -->
+                  <path d="M50 140 Q60 130 70 140 Q80 150 90 140 Q100 130 110 140 Q120 150 130 140 Q140 130 150 140" stroke="rgba(45,212,191,0.5)" stroke-width="1" fill="none"/>
+                  <animate attributeName="opacity" values="1;0.6;1" dur="3s" repeatCount="indefinite"/>
+                </svg>
+              </div>
               <div class="proj-body">
-                <span class="proj-tag">Publication · FACTS</span>
-                <h3 class="proj-title">Reactive Power Compensation with STATCOM</h3>
-                <p class="proj-desc">Implemented and validated STATCOM-based shunt compensation for improved voltage stability and load balance in HV transmission systems.</p>
+                <span class="proj-tag">Publication · FACTS Devices</span>
+                <h3 class="proj-title">Reactive Power Compensation of Transmission Network using STATCOM</h3>
+                <p class="proj-desc">Implemented and validated STATCOM-based shunt compensation for improved voltage stability and load balance in HV transmission systems. Published in IJIREEICE — an international journal focused on electrical and instrumentation engineering.</p>
+                <div class="proj-metrics">
+                  <div class="proj-metric"><div class="proj-metric-val">FACTS</div><div class="proj-metric-label">Technology</div></div>
+                  <div class="proj-metric"><div class="proj-metric-val">HV</div><div class="proj-metric-label">Transmission</div></div>
+                  <div class="proj-metric"><div class="proj-metric-val">Pub.</div><div class="proj-metric-label">IJIREEICE</div></div>
+                </div>
                 <a href="https://ijireeice.com/papers/reactive-power-compensation-of-transmission-network-using-facts-devices/" target="_blank" rel="noopener" class="proj-link">Read Publication <i class="fas fa-arrow-right"></i></a>
               </div>
             </article>
+
+            <!-- XLPE Cable Design -->
             <article class="proj-card appear appear-delay-1">
-              <img class="proj-img" src="https://images.unsplash.com/photo-1645128055965-81f7c02d42a7?auto=format&fit=crop&w=900&q=80" alt="XLPE cable" loading="lazy"/>
+              <div class="proj-visual">
+                <svg viewBox="0 0 180 130" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:180px;">
+                  <!-- Cable cross section -->
+                  <circle cx="90" cy="65" r="42" fill="none" stroke="rgba(245,158,11,0.15)" stroke-width="1"/>
+                  <circle cx="90" cy="65" r="34" fill="#06070a" stroke="rgba(245,158,11,0.3)" stroke-width="1.5"/>
+                  <circle cx="90" cy="65" r="25" fill="none" stroke="rgba(245,158,11,0.5)" stroke-width="2"/>
+                  <circle cx="90" cy="65" r="14" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="2"/>
+                  <circle cx="90" cy="65" r="5" fill="#f59e0b"/>
+                  <!-- Labels -->
+                  <text x="139" y="30" font-size="7" fill="rgba(245,158,11,0.6)" font-family="monospace">XLPE</text>
+                  <text x="139" y="40" font-size="7" fill="rgba(245,158,11,0.4)" font-family="monospace">Insulation</text>
+                  <line x1="124" y1="44" x2="114" y2="50" stroke="rgba(245,158,11,0.3)" stroke-width="0.8"/>
+                  <text x="8" y="30" font-size="7" fill="rgba(245,158,11,0.6)" font-family="monospace">Screen</text>
+                  <line x1="32" y1="32" x2="57" y2="42" stroke="rgba(245,158,11,0.3)" stroke-width="0.8"/>
+                  <text x="8" y="95" font-size="7" fill="rgba(245,158,11,0.6)" font-family="monospace">Conductor</text>
+                  <line x1="38" y1="93" x2="76" y2="68" stroke="rgba(245,158,11,0.3)" stroke-width="0.8"/>
+                  <!-- Voltage label -->
+                  <text x="90" y="118" font-size="8" fill="rgba(245,158,11,0.7)" text-anchor="middle" font-family="monospace">MV / HV XLPE</text>
+                </svg>
+              </div>
               <div class="proj-body">
-                <span class="proj-tag">Engineering · HV Cables</span>
-                <h3 class="proj-title">XLPE Cable MV/HV Integration</h3>
-                <p class="proj-desc">Detailed MV to HV XLPE cable installation and AIS/GIS substation integration for reliable energy delivery across industrial infrastructure.</p>
+                <span class="proj-tag">Design · HV Cable</span>
+                <h3 class="proj-title">XLPE Cable MV/HV Integration & Routing</h3>
+                <p class="proj-desc">Detailed MV to HV XLPE cable routing, duct bank design, and AIS/GIS substation integration ensuring reliable energy delivery and code compliance.</p>
+                <div class="proj-metrics">
+                  <div class="proj-metric"><div class="proj-metric-val">MV–HV</div><div class="proj-metric-label">Voltage Range</div></div>
+                  <div class="proj-metric"><div class="proj-metric-val">AIS/GIS</div><div class="proj-metric-label">Integration</div></div>
+                </div>
                 <a href="#contact" class="proj-link">Request Details <i class="fas fa-arrow-right"></i></a>
               </div>
             </article>
+
+            <!-- 455MW Solar - UGVCL -->
             <article class="proj-card appear appear-delay-2">
-              <img class="proj-img" src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=900&q=80" alt="Battery modeling" loading="lazy"/>
+              <div class="proj-visual">
+                <svg viewBox="0 0 180 130" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:180px;">
+                  <!-- Solar panels grid -->
+                  <rect x="10" y="20" width="30" height="20" rx="2" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <line x1="10" y1="30" x2="40" y2="30" stroke="rgba(245,158,11,0.2)" stroke-width="0.8"/>
+                  <line x1="25" y1="20" x2="25" y2="40" stroke="rgba(245,158,11,0.2)" stroke-width="0.8"/>
+                  <rect x="50" y="20" width="30" height="20" rx="2" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <line x1="50" y1="30" x2="80" y2="30" stroke="rgba(245,158,11,0.2)" stroke-width="0.8"/>
+                  <line x1="65" y1="20" x2="65" y2="40" stroke="rgba(245,158,11,0.2)" stroke-width="0.8"/>
+                  <rect x="90" y="20" width="30" height="20" rx="2" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <line x1="90" y1="30" x2="120" y2="30" stroke="rgba(245,158,11,0.2)" stroke-width="0.8"/>
+                  <line x1="105" y1="20" x2="105" y2="40" stroke="rgba(245,158,11,0.2)" stroke-width="0.8"/>
+                  <rect x="130" y="20" width="30" height="20" rx="2" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.2"/>
+                  <line x1="130" y1="30" x2="160" y2="30" stroke="rgba(245,158,11,0.3)" stroke-width="0.8"/>
+                  <line x1="145" y1="20" x2="145" y2="40" stroke="rgba(245,158,11,0.3)" stroke-width="0.8"/>
+                  <!-- Rows 2 -->
+                  <rect x="10" y="50" width="30" height="20" rx="2" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <rect x="50" y="50" width="30" height="20" rx="2" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <rect x="90" y="50" width="30" height="20" rx="2" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="1.2"/>
+                  <rect x="130" y="50" width="30" height="20" rx="2" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <!-- Substation box -->
+                  <rect x="70" y="85" width="40" height="25" rx="3" fill="#0d0f14" stroke="#f59e0b" stroke-width="1.5"/>
+                  <text x="90" y="100" font-size="7" fill="#f59e0b" text-anchor="middle" font-family="monospace">33/11kV</text>
+                  <!-- Collector lines -->
+                  <line x1="25" y1="70" x2="90" y2="85" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+                  <line x1="65" y1="70" x2="90" y2="85" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+                  <line x1="105" y1="70" x2="90" y2="85" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
+                  <line x1="145" y1="70" x2="90" y2="85" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+                  <!-- MW label -->
+                  <text x="90" y="122" font-size="9" fill="#f59e0b" text-anchor="middle" font-family="monospace" font-weight="bold">455 MW</text>
+                </svg>
+              </div>
               <div class="proj-body">
-                <span class="proj-tag">Research · Energy Storage</span>
-                <h3 class="proj-title">Li-ion Battery OCV-SOC Modeling</h3>
-                <p class="proj-desc">Developed precise open-circuit voltage modeling for battery storage optimization and performance forecasting in renewable energy systems.</p>
+                <span class="proj-tag">Engineering · Solar · UGVCL</span>
+                <h3 class="proj-title">455MW Solar Plant — UGVCL SKY Scheme</h3>
+                <p class="proj-desc">Electrical system design for a large-scale solar project including grounding, sag/tension calculations, and AutoCAD + CDEGS cable design. Daily reporting to Gujarat government stakeholders.</p>
+                <div class="proj-metrics">
+                  <div class="proj-metric"><div class="proj-metric-val">455MW</div><div class="proj-metric-label">Capacity</div></div>
+                  <div class="proj-metric"><div class="proj-metric-val">CDEGS</div><div class="proj-metric-label">Tool Used</div></div>
+                </div>
                 <a href="#contact" class="proj-link">Request Details <i class="fas fa-arrow-right"></i></a>
               </div>
             </article>
+
           </div>
         </div>
       </div>
@@ -1469,9 +1651,9 @@
                   <i class="fab fa-linkedin-in"></i>
                   linkedin.com/in/jaydeep-sathvara
                 </a>
-                <a href="mailto:jaydeep.sathvara@email.com" class="contact-link appear appear-delay-1">
+                <a href="/cdn-cgi/l/email-protection#89e3e8f0edececf9a7fae8fde1ffe8fbe8c9ece4e8e0e5a7eae6e4" class="contact-link appear appear-delay-1">
                   <i class="fas fa-envelope"></i>
-                  jaydeep.sathvara@email.com
+                  <span class="__cf_email__" data-cfemail="3a505b435e5f5f4a14495b4e524c5b485b7a5f575b535614595557">[email&#160;protected]</span>
                 </a>
                 <a href="#" class="contact-link appear appear-delay-2">
                   <i class="fas fa-map-marker-alt"></i>
@@ -1510,7 +1692,7 @@
     <i class="fas fa-arrow-up"></i>
   </button>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // Cursor glow
     const glow = document.getElementById('cursor-glow');
     document.addEventListener('mousemove', e => {
@@ -1563,7 +1745,7 @@
     }
 
     // Animate initial bars
-    setTimeout(() => animateBars(document.getElementById('cat-power')), 400);
+    setTimeout(() => animateBars(document.getElementById('cat-physical')), 400);
 
     // Animate bars when skills section scrolls into view
     const skillsSection = document.getElementById('skills');
@@ -1592,9 +1774,10 @@
     // Typed effect for hero title
     const titles = [
       'Substation Design Engineer & MEng',
-      'MV / HV / EHV / UHV Specialist',
-      'AIS / GIS Systems Expert',
-      'XLPE Cable Design Engineer'
+      'AIS / GIS Physical Layout Specialist',
+      'XLPE Cable & Duct Bank Designer',
+      'MV → UHV Infrastructure Engineer',
+      'Point-Cloud & Site Survey Expert'
     ];
     let ti = 0, ci = 0, deleting = false;
     const titleEl = document.getElementById('typed-title');
@@ -1625,6 +1808,19 @@
       }
     }
     setTimeout(type, 1000);
+
+    // Active nav link highlight on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 120) current = sec.getAttribute('id');
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--amber)' : '';
+      });
+    });
   </script>
 </body>
 </html>
