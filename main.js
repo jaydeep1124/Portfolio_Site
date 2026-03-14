@@ -240,6 +240,13 @@ function throttle(func, limit) {
     };
 }
 
+// Form submit fallback hook (prevent undefined onsubmit error)
+function handleSubmit(event) {
+    // If you need email-form integration, add logic here.
+    // Returning true allows HTML to proceed with form submission.
+    return true;
+}
+
 // ============================================
 // CONSOLE MESSAGE
 // ============================================
