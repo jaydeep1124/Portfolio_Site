@@ -4,37 +4,37 @@
 
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
-const navLinks = document.querySelectorAll('.nav-link');
+const navLinks = document.querySelectorAll('.nav-item a[href^="#"], .nav-link');
+const navbar = document.querySelector('.nav') || document.querySelector('.navbar');
 
-// Toggle mobile menu
 if (hamburger) {
     hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+        navMenu?.classList.toggle('active');
         hamburger.classList.toggle('active');
     });
 }
 
-// Close menu when a link is clicked
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+        navMenu?.classList.remove('active');
         hamburger?.classList.remove('active');
     });
 });
 
-// Close menu when clicking outside
+// Close menu when clicking outside nav
 document.addEventListener('click', (e) => {
-    if (!e.target.closest('.navbar-container')) {
-        navMenu.classList.remove('active');
+    if (navbar && !e.target.closest('.nav') && !e.target.closest('.navbar')) {
+        navMenu?.classList.remove('active');
         hamburger?.classList.remove('active');
     }
 });
+
 
 // ============================================
 // SCROLL TO TOP BUTTON
 // ============================================
 
-const scrollToTopBtn = document.getElementById('scrollToTop');
+const scrollToTopBtn = document.getElementById('scrollToTop') || document.querySelector('.btn-scroll-top');
 
 window.addEventListener('scroll', () => {
     if (window.scrollY > 300) {
