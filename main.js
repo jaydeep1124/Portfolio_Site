@@ -83,29 +83,6 @@ if (contactForm) {
 }
 
 // ============================================
-// INTERSECTION OBSERVER FOR ANIMATIONS
-// ============================================
-
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('aos-animate');
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-// Observe all AOS elements
-document.querySelectorAll('[data-aos]').forEach(el => {
-    observer.observe(el);
-});
-
-// ============================================
 // NAVBAR BACKGROUND ON SCROLL
 // ============================================
 
