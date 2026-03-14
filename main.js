@@ -1,153 +1,248 @@
+// ============================================
+// NAVIGATION & HAMBURGER MENU
+// ============================================
 
 const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.navbar-nav');
-const links = document.querySelectorAll('.navbar-nav li');
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
 
-hamburger.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-  links.forEach(link => {
-    link.classList.toggle('fade');
-  });
-});
-
-// Define the URL of your home page
-const homeUrl = "https://jaydeep1.netlify.app/#home";
-
-// Check if the page has finished loading
-window.addEventListener("load", () => {
-  // If the URL of the current page is not the home page, redirect to the home page
-  if (window.location.href !== homeUrl) {
-    window.location.href = homeUrl;
-  }
-});
-
-// get the button element
-const button = document.querySelector('#my-button');
-
-// add a click event listener to the button
-button.addEventListener('click', function() {
-  // get the element you want to animate
-  const elementToAnimate = document.querySelector('#my-element');
-
-  // add a CSS class to the element to trigger the animation
-  elementToAnimate.classList.add('animate');
-});
-
-// kikikik
-function animateTimelineItems() {
-  $(".timeline-item").each(function() {
-    if ($(this).offset().top < $(window).scrollTop() + $(window).height() * 0.9) {
-      $(this).addClass("show");
-    }
-  });
-}
-
-$(document).ready(function() {
-  animateTimelineItems();
-  $(window).on("scroll", animateTimelineItems);
-});
-
-// Close navbar when link is clicked
-const navLink = document.querySelectorAll(".nav-link");
-
-navLink.forEach((n) => n.addEventListener("click", closeMenu));
-
-function closeMenu() {
-  hamburger.classList.remove("active");
-  navMenu.classList.remove("active");
-}
-
-// Save user preference on load
-
-const currentTheme = localStorage.getItem("theme")
-  ? localStorage.getItem("theme")
-  : null;
-
-if (currentTheme) {
-  document.documentElement.setAttribute("data-theme", currentTheme);
-
-  if (currentTheme === "dark") {
-    toggleSwitch.checked = true;
-  }
-}
-
-// contect 
-// Wait for the DOM to be loaded
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the form element
-  const form = document.querySelector('.form');
-  
-  // Add an event listener to the form submit event
-  form.addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevent the form from submitting normally
-    
-    // Get the form input values
-    const name = document.querySelector('#Name').value.trim();
-    const subject = document.querySelector('#Subject').value.trim();
-    const message = document.querySelector('#Message').value.trim();
-    
-    // Validate the form input values
-    if (!name || !subject || !message) {
-      alert('Please fill in all fields.'); // Show an error message if any field is empty
-      return;
-    }
-    
-    // Send the form data to the server using fetch
-    fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form)
-    })
-    .then(response => {
-      if (response.ok) {
-        alert('Thank you for your message!'); // Show a success message if the form submission is successful
-        form.reset(); // Reset the form
-      } else {
-        throw new Error('Network response was not ok.');
-      }
-    })
-    .catch(error => {
-      console.error('There was a problem with the form submission:', error);
-      alert('There was a problem with your message. Please try again later.'); // Show an error message if the form submission fails
+// Toggle mobile menu
+if (hamburger) {
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
     });
-  });
-});
-
-const projectsSection = document.querySelector('.projects');
-const projectItems = document.querySelectorAll('.project');
-
-function checkScroll() {
-  let inView = false;
-
-  projectItems.forEach(item => {
-    const position = item.getBoundingClientRect();
-    if(position.top < window.innerHeight && position.bottom >= 0) {
-      inView = true;
-      item.classList.add('visible');
-      item.classList.remove('hidden');
-    } else {
-      item.classList.add('hidden');
-      item.classList.remove('visible');
-    }
-  });
-
-  if(inView) {
-    projectsSection.classList.add('visible');
-    projectsSection.classList.remove('hidden');
-  } else {
-    projectsSection.classList.add('hidden');
-    projectsSection.classList.remove('visible');
-  }
 }
 
-window.addEventListener('scroll', checkScroll);
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('animated');
-    }
-  });
+// Close menu when a link is clicked
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        hamburger?.classList.remove('active');
+    });
 });
 
-const aboutMeContent = document.querySelector('.about-me-content');
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.navbar-container')) {
+        navMenu.classList.remove('active');
+        hamburger?.classList.remove('active');
+    }
+});
 
-observer.observe(aboutMeContent);
+// ============================================
+// SCROLL TO TOP BUTTON
+// ============================================
+
+const scrollToTopBtn = document.getElementById('scrollToTop');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        scrollToTopBtn?.classList.add('show');
+    } else {
+        scrollToTopBtn?.classList.remove('show');
+    }
+});
+
+scrollToTopBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// ============================================
+// SMOOTH SCROLL FOR ANCHOR LINKS
+// ============================================
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// ============================================
+// FORM HANDLING
+// ============================================
+
+const contactForm = document.querySelector('form[name="contact"]');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        // Let Netlify handle the form submission
+        // This is just for validation feedback if needed
+    });
+}
+
+// ============================================
+// INTERSECTION OBSERVER FOR ANIMATIONS
+// ============================================
+
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('aos-animate');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+// Observe all AOS elements
+document.querySelectorAll('[data-aos]').forEach(el => {
+    observer.observe(el);
+});
+
+// ============================================
+// NAVBAR BACKGROUND ON SCROLL
+// ============================================
+
+const navbar = document.querySelector('.navbar');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar?.style.background = 'rgba(15, 23, 42, 0.95)';
+    } else {
+        navbar?.style.background = 'rgba(15, 23, 42, 0.8)';
+    }
+});
+
+// ============================================
+// INITIALIZE AOS IF LOADED
+// ============================================
+
+if (typeof AOS !== 'undefined') {
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+    });
+}
+
+// ============================================
+// PROJECT CARD INTERACTIONS
+// ============================================
+
+const projectCards = document.querySelectorAll('.project-card');
+
+projectCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.cursor = 'pointer';
+    });
+});
+
+// ============================================
+// TIMELINE ITEM ANIMATIONS
+// ============================================
+
+const timelineItems = document.querySelectorAll('.timeline-item');
+
+const timelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, {
+    threshold: 0.2
+});
+
+timelineItems.forEach(item => {
+    item.style.opacity = '0';
+    item.style.transform = 'translateY(20px)';
+    item.style.transition = 'all 0.6s ease-out';
+    timelineObserver.observe(item);
+});
+
+// ============================================
+// HANDLE ACTIVE NAV LINK
+// ============================================
+
+window.addEventListener('scroll', () => {
+    let current = '';
+    
+    document.querySelectorAll('section').forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= sectionTop - 200) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').slice(1) === current) {
+            link.classList.add('active');
+        }
+    });
+});
+
+// ============================================
+// PERFORMANCE OPTIMIZATION
+// ============================================
+
+// Lazy load images
+if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src || img.src;
+                img.classList.add('loaded');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+// Debounce function for performance
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Throttle function
+function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+// ============================================
+// CONSOLE MESSAGE
+// ============================================
+
+console.log('%c✨ Welcome to Jaydeep Sathvara\'s Portfolio! ✨', 'color: #6366f1; font-size: 16px; font-weight: bold;');
+console.log('%cLooking for something specific? Check the source code or reach out!', 'color: #818cf8; font-size: 14px;');
